@@ -34,10 +34,10 @@ import static ora.demo.lab.Rating.*;
  * @version 1.0
  */
 public class Product {
-	private int id;
-	private String name;
-	private BigDecimal price;
-	private Rating rating;
+	private int id;           // You can use 'final' for ummutable objects.
+	private String name;      // You can use 'final' for ummutable objects.
+	private BigDecimal price; // You can use 'final' for ummutable objects.
+	private Rating rating;    // You can use 'final' for ummutable objects.
 	
 	/**
 	 * A constant that defines a {@link java.math.BigDecimal BigDecimal} value
@@ -78,25 +78,25 @@ public class Product {
 		return id;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
-	}
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
+//	public void setName(String name) {
+//		this.name = name;
+//	}
 	
 	public BigDecimal getPrice() {
 		return price;
 	}
 	
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
+//	public void setPrice(BigDecimal price) {
+//		this.price = price;
+//	}
 	
 	public Rating getRating() {
 		return rating;
@@ -110,5 +110,14 @@ public class Product {
 	 */
 	public BigDecimal getDiscount() {
 		return price.multiply(DISCOUNT_RATE).setScale(2, RoundingMode.HALF_UP);
+	}
+	
+	/**
+	 * Create a copy from the current object with a new rating.
+	 * @param newRating The new rating.
+	 * @return A copy of the current {@code Product} with a new rating.
+	 */
+	public Product applyRating(Rating newRating) {
+		return new Product(id, name, price, newRating);
 	}
 }

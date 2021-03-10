@@ -15,10 +15,12 @@
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
   */
 
-package ora.demo;
+package ora.demo.lab;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
+import static ora.demo.lab.Rating.*;
 
 /**
  * {@code Product} class represents properties and behaviours of
@@ -45,24 +47,57 @@ public class Product {
 	 */
 	public static final BigDecimal DISCOUNT_RATE=BigDecimal.valueOf(0.1);
 	
+	/**
+	 * @param id
+	 * @param name
+	 * @param price
+	 * @param rating
+	 */
+	public Product(int id, String name, BigDecimal price, Rating rating) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.rating = rating;
+	}
+	
+	/**
+	 * @param id
+	 * @param name
+	 * @param price
+	 */
+	public Product(int id, String name, BigDecimal price) {
+		this(id, name, price, NOT_RATED);
+	}
+	
+	public Product() {
+		this(0, "no name", BigDecimal.ZERO);
+	}
+
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public BigDecimal getPrice() {
 		return price;
 	}
+	
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
+	
 	public Rating getRating() {
 		return rating;
 	}

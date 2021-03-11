@@ -55,7 +55,7 @@ public abstract class Product {
 	 * @param price
 	 * @param rating
 	 */
-	public Product(int id, String name, BigDecimal price, Rating rating) {
+	Product(int id, String name, BigDecimal price, Rating rating) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -68,14 +68,10 @@ public abstract class Product {
 	 * @param name
 	 * @param price
 	 */
-	public Product(int id, String name, BigDecimal price) {
+	Product(int id, String name, BigDecimal price) {
 		this(id, name, price, NOT_RATED);
 	}
 	
-	public Product() {
-		this(0, "no name", BigDecimal.ZERO);
-	}
-
 	public int getId() {
 		return id;
 	}

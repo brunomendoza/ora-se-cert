@@ -15,12 +15,12 @@
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
   */
 
-package ora.demo.lab;
+package ora.demo.data;
+
+import static ora.demo.data.Rating.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
-import static ora.demo.lab.Rating.*;
 
 /**
  * {@code Product} class represents properties and behaviours of
@@ -119,5 +119,11 @@ public class Product {
 	 */
 	public Product applyRating(Rating newRating) {
 		return new Product(id, name, price, newRating);
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
 	}
 }

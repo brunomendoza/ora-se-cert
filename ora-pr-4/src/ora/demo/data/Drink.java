@@ -15,23 +15,18 @@
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
   */
 
-package ora.demo.lab;
+package ora.demo.data;
 
-public enum Rating {
-	NOT_RATED("\u2606\u2606\u2606\u2606\u2606"),
-	ONE_STAR("\u2605\u2606\u2606\u2606\u2606"),
-	TWO_STAR("\u2605\u2605\u2606\u2606\u2606"),
-	THREE_STAR("\u2605\u2605\u2605\u2606\u2606"),
-	FOUR_STAR("\u2605\u2605\u2605\u2605\u2606"),
-	FIVE_STAR("\u2605\u2605\u2605\u2605\u2605");
-	
-	private String stars;
-	
-	private Rating(String rate) {
-		this.stars = rate;
-	}
-	
-	public String getStars() {
-		return stars;
+import java.math.BigDecimal;
+
+public class Drink extends Product {
+	/**
+	 * @param id
+	 * @param name
+	 * @param price
+	 * @param rating
+	 */
+	public Drink(int id, String name, BigDecimal price, Rating rating) {
+		super(id, name, price, rating);
 	}
 }

@@ -17,10 +17,12 @@
 
 package ora.demo.data;
 
-import static ora.demo.data.Rating.*;
+import static ora.demo.data.Rating.NOT_RATED;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * {@code Product} class represents properties and behaviours of
@@ -33,7 +35,7 @@ import java.math.RoundingMode;
  * @author Bruno Mendoza
  * @version 1.0
  */
-public class Product {
+public abstract class Product {
 	private int id;           // You can use 'final' for ummutable objects.
 	private String name;      // You can use 'final' for ummutable objects.
 	private BigDecimal price; // You can use 'final' for ummutable objects.
@@ -98,7 +100,7 @@ public class Product {
 //		this.price = price;
 //	}
 	
-	public Rating getRating() {
+	public Rating getStars() {
 		return rating;
 	}
 	
@@ -117,13 +119,34 @@ public class Product {
 	 * @param newRating The new rating.
 	 * @return A copy of the current {@code Product} with a new rating.
 	 */
-	public Product applyRating(Rating newRating) {
-		return new Product(id, name, price, newRating);
-	}
-	
+	public abstract Product applyRating(Rating newRating);
+
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return "Product [id=" + id + ", name=" + name + ", price=" + price + ", rating=" + rating + ", getBestBefore=" + getBestBefore() + "]";
+	}
+	
+	/**
+	 * Get the recommended date for getting the product.
+	 * @return The recommended date.
+	 */
+	public LocalDate getBestBefore() {
+		return LocalDate.now();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Product))
+//		if (!(obj.getClass() ==  Product.getClass()))
+			return false;
+		Product other = (Product) obj;
+		return id == other.id && Objects.equals(name, other.name);
 	}
 }

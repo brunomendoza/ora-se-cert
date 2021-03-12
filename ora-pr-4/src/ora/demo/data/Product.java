@@ -35,7 +35,7 @@ import java.util.Objects;
  * @author Bruno Mendoza
  * @version 1.0
  */
-public abstract class Product {
+public abstract class Product implements Rateable<Product> {
 	private int id;           // You can use 'final' for ummutable objects.
 	private String name;      // You can use 'final' for ummutable objects.
 	private BigDecimal price; // You can use 'final' for ummutable objects.
@@ -96,7 +96,8 @@ public abstract class Product {
 //		this.price = price;
 //	}
 	
-	public Rating getStars() {
+	@Override
+	public Rating getRating() {
 		return rating;
 	}
 	
@@ -110,12 +111,12 @@ public abstract class Product {
 		return price.multiply(DISCOUNT_RATE).setScale(2, RoundingMode.HALF_UP);
 	}
 	
-	/**
-	 * Create a copy from the current object with a new rating.
-	 * @param newRating The new rating.
-	 * @return A copy of the current {@code Product} with a new rating.
-	 */
-	public abstract Product applyRating(Rating newRating);
+//	/**
+//	 * Create a copy from the current object with a new rating.
+//	 * @param newRating The new rating.
+//	 * @return A copy of the current {@code Product} with a new rating.
+//	 */
+//	public abstract Product applyRating(Rating newRating);
 
 	@Override
 	public String toString() {

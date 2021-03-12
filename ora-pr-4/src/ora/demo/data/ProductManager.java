@@ -70,7 +70,7 @@ public class ProductManager {
 		txt.append(MessageFormat.format(resources.getString("product"),
 				product.getName(),
 				moneyFormat.format(product.getPrice()),
-//				product.getRating().getStars(),
+				product.getRating().getStars(),
 				dateFormat.format(product.getBestBefore())));
 		txt.append("\n");
 		
@@ -79,7 +79,7 @@ public class ProductManager {
 					review.getRating().getStars(),
 					review.getComments()));
 		} else {
-			txt.append(resources.getString("no.review"));
+			txt.append(resources.getString("no.reviews"));
 		}
 		
 		txt.append("\n");

@@ -36,7 +36,7 @@ public class Shop {
 		ProductManager pm = new ProductManager(new Locale("es", "ES"));
 		
 		Product p1 = pm.createProduct(101, "Tea", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
-		pm.printProductReport();
+		pm.printProductReport(p1);
 		
 		p1 = pm.reviewProduct(p1, Rating.FOUR_STAR, "Nice hot cup of tea");
 		p1 = pm.reviewProduct(p1, Rating.TWO_STAR, "Rather weak tea");
@@ -45,6 +45,20 @@ public class Shop {
 		p1 = pm.reviewProduct(p1, Rating.FIVE_STAR, "Perfect tea");
 		p1 = pm.reviewProduct(p1, Rating.THREE_STAR, "Just add some lemon");
 		
-		pm.printProductReport();
+		pm.printProductReport(p1);
+		
+		Product p2 = pm.createProduct(102, "Coffe", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
+		p2 = pm.reviewProduct(p2, Rating.THREE_STAR, "Coffee was ok");
+		p2 = pm.reviewProduct(p2, Rating.ONE_STAR, "Where is the milk?!");
+		p2 = pm.reviewProduct(p2, Rating.FIVE_STAR, "It's perfect with ten spoons of sugar");
+		
+		pm.printProductReport(p2);
+		
+		Product p3 = pm.createProduct(103, "Cake", BigDecimal.valueOf(3.99), Rating.NOT_RATED);
+		p3 = pm.reviewProduct(p3, Rating.THREE_STAR, "Very nice cake");
+		p3 = pm.reviewProduct(p3, Rating.FOUR_STAR, "It's good, but I've expected more chocolate");
+		p3 = pm.reviewProduct(p3, Rating.FIVE_STAR, "This cake is perfect");
+		
+		pm.printProductReport(p3);
 	}
 }

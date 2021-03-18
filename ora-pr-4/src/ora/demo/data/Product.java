@@ -144,6 +144,6 @@ public abstract class Product implements Rateable<Product> {
 //		if (!(obj.getClass() ==  Product.getClass()))
 			return false;
 		Product other = (Product) obj;
-		return id == other.id && Objects.equals(name, other.name);
+		return id == other.id;
 	}
 }

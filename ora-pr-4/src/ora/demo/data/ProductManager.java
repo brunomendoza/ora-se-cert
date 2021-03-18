@@ -24,7 +24,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -66,6 +66,23 @@ public class ProductManager {
 		return product;
 	}
 	
+	public Product findProduct(int productId) {
+		Product result = null;
+		
+		for(Product product : products.keySet()) {
+			if (product.getId() == productId) {
+				result = product;
+				break;
+			}
+		}
+		
+		return result;
+	}
+	
+	public Product reviewProduct(int productId, Rating rating, String comments) {
+		return reviewProduct(findProduct(productId), rating, comments);
+	}
+	
 	public Product reviewProduct(Product product, Rating rating, String comments) {
 		List<Review> reviews = products.get(product);
 		int sum = 0;
@@ -84,8 +101,13 @@ public class ProductManager {
 		return product;
 	}
 	
+	public void printProductReport(int productId) {
+		printProductReport(findProduct(productId));
+	}
+	
 	public void printProductReport(Product product) {
 		List<Review> reviews = products.get(product);
+		Collections.sort(reviews);
 		StringBuilder txt = new StringBuilder();
 		
 		txt.append(MessageFormat.format(resources.getString("product"),

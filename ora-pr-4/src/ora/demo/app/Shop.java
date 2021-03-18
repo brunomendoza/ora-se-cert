@@ -35,30 +35,30 @@ public class Shop {
 	public static void main(String[] args) {
 		ProductManager pm = new ProductManager(new Locale("es", "ES"));
 		
-		Product p1 = pm.createProduct(101, "Tea", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
-		pm.printProductReport(p1);
+		pm.createProduct(101, "Tea", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
+		pm.printProductReport(101);
 		
-		p1 = pm.reviewProduct(p1, Rating.FOUR_STAR, "Nice hot cup of tea");
-		p1 = pm.reviewProduct(p1, Rating.TWO_STAR, "Rather weak tea");
-		p1 = pm.reviewProduct(p1, Rating.FOUR_STAR, "Fine tea");
-		p1 = pm.reviewProduct(p1, Rating.FOUR_STAR, "Good tea");
-		p1 = pm.reviewProduct(p1, Rating.FIVE_STAR, "Perfect tea");
-		p1 = pm.reviewProduct(p1, Rating.THREE_STAR, "Just add some lemon");
+		pm.reviewProduct(101, Rating.FOUR_STAR, "Nice hot cup of tea");
+		pm.reviewProduct(101, Rating.TWO_STAR, "Rather weak tea");
+		pm.reviewProduct(101, Rating.FOUR_STAR, "Fine tea");
+		pm.reviewProduct(101, Rating.FOUR_STAR, "Good tea");
+		pm.reviewProduct(101, Rating.FIVE_STAR, "Perfect tea");
+		pm.reviewProduct(101, Rating.THREE_STAR, "Just add some lemon");
 		
-		pm.printProductReport(p1);
+		pm.printProductReport(101);
 		
-		Product p2 = pm.createProduct(102, "Coffe", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
-		p2 = pm.reviewProduct(p2, Rating.THREE_STAR, "Coffee was ok");
-		p2 = pm.reviewProduct(p2, Rating.ONE_STAR, "Where is the milk?!");
-		p2 = pm.reviewProduct(p2, Rating.FIVE_STAR, "It's perfect with ten spoons of sugar");
+		pm.createProduct(102, "Coffe", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
+		pm.reviewProduct(102, Rating.THREE_STAR, "Coffee was ok");
+		pm.reviewProduct(102, Rating.ONE_STAR, "Where is the milk?!");
+		pm.reviewProduct(102, Rating.FIVE_STAR, "It's perfect with ten spoons of sugar");
 		
-		pm.printProductReport(p2);
+		pm.printProductReport(102);
 		
-		Product p3 = pm.createProduct(103, "Cake", BigDecimal.valueOf(3.99), Rating.NOT_RATED);
-		p3 = pm.reviewProduct(p3, Rating.THREE_STAR, "Very nice cake");
-		p3 = pm.reviewProduct(p3, Rating.FOUR_STAR, "It's good, but I've expected more chocolate");
-		p3 = pm.reviewProduct(p3, Rating.FIVE_STAR, "This cake is perfect");
+		pm.createProduct(103, "Cake", BigDecimal.valueOf(3.99), Rating.NOT_RATED);
+		pm.reviewProduct(103, Rating.THREE_STAR, "Very nice cake");
+		pm.reviewProduct(103, Rating.FOUR_STAR, "It's good, but I've expected more chocolate");
+		pm.reviewProduct(103, Rating.FIVE_STAR, "This cake is perfect");
 		
-		pm.printProductReport(p3);
+		pm.printProductReport(103);
 	}
 }

@@ -17,7 +17,7 @@
 
 package ora.demo.data;
 
-public class Review {
+public class Review implements Comparable<Review> {
 	private Rating rating;
 	private String comments;
 	
@@ -48,5 +48,10 @@ public class Review {
 	@Override
 	public String toString() {
 		return String.format("Review [rating=%s, comments=%s]", rating, comments);
+	}
+	
+	@Override
+	public int compareTo(Review other) {
+		return other.rating.ordinal() - this.rating.ordinal();
 	}
 }

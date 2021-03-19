@@ -71,6 +71,17 @@ public class Shop {
 //			}
 //		});
 		
+//		 Anonymous Inner Class
+//		Anonymous class can access to final or practically final outer
+//		member variables.
+		Comparator<Product> comparator = new Comparator<Product>() {
+			@Override
+			public int compare(Product o1, Product o2) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+		};
+		
 //		Compare by stars
 		pm.printProducts((p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal());
 		

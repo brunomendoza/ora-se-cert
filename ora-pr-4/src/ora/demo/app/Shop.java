@@ -18,7 +18,7 @@
 package ora.demo.app;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Locale;
 
 import ora.demo.data.Product;
@@ -36,7 +36,7 @@ public class Shop {
 		ProductManager pm = new ProductManager(new Locale("es", "ES"));
 		
 		pm.createProduct(101, "Tea", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
-		pm.printProductReport(101);
+//		pm.printProductReport(101);
 		
 		pm.reviewProduct(101, Rating.FOUR_STAR, "Nice hot cup of tea");
 		pm.reviewProduct(101, Rating.TWO_STAR, "Rather weak tea");
@@ -45,20 +45,43 @@ public class Shop {
 		pm.reviewProduct(101, Rating.FIVE_STAR, "Perfect tea");
 		pm.reviewProduct(101, Rating.THREE_STAR, "Just add some lemon");
 		
-		pm.printProductReport(101);
+//		pm.printProductReport(101);
+		
+		pm.changeLocale("en-US");
 		
 		pm.createProduct(102, "Coffe", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
 		pm.reviewProduct(102, Rating.THREE_STAR, "Coffee was ok");
 		pm.reviewProduct(102, Rating.ONE_STAR, "Where is the milk?!");
 		pm.reviewProduct(102, Rating.FIVE_STAR, "It's perfect with ten spoons of sugar");
 		
-		pm.printProductReport(102);
+//		pm.printProductReport(102);
 		
 		pm.createProduct(103, "Cake", BigDecimal.valueOf(3.99), Rating.NOT_RATED);
 		pm.reviewProduct(103, Rating.THREE_STAR, "Very nice cake");
 		pm.reviewProduct(103, Rating.FOUR_STAR, "It's good, but I've expected more chocolate");
 		pm.reviewProduct(103, Rating.FIVE_STAR, "This cake is perfect");
 		
-		pm.printProductReport(103);
+//		pm.printProductReport(103);
+		
+//		Anonymous class
+//		pm.printProducts(new Comparator<Product>() {
+//			@Override
+//			public int compare(Product p1, Product p2) {
+//				return p2.getRating().ordinal() - p1.getRating().ordinal();
+//			}
+//		});
+		
+//		Compare by stars
+		pm.printProducts((p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal());
+		
+//		Compare by price
+		pm.printProducts((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()));
+		
+//		Compare by starts (rating)
+		Comparator<Product> ratingSorter = (p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal();
+		Comparator<Product> priceSorter = (p1, p2) -> p2.getPrice().compareTo(p1.getPrice());
+		
+		pm.printProducts(ratingSorter.thenComparing(priceSorter));
+		pm.printProducts(priceSorter.thenComparing(ratingSorter).reversed());
 	}
 }

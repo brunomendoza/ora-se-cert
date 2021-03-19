@@ -25,35 +25,44 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class ProductManager {
-	
-//	private Product product;
-//	private Review[] reviews = new Review[5];
 	private Map<Product, List<Review>> products = new HashMap<>();
-	
-	private Locale locale;
-	private ResourceBundle resources;
-	private DateTimeFormatter dateFormat;
-	private NumberFormat moneyFormat;
+	private ResourceFormatter formatter;
+	private static Map<String, ResourceFormatter> formatters = Map.of(
+		"es-ES", new ResourceFormatter(new Locale("es", "ES")),
+		"en-US", new ResourceFormatter(Locale.US),
+		"en-GB", new ResourceFormatter(Locale.UK),
+		"fr-FR", new ResourceFormatter(Locale.FRANCE),
+		"zh-CH", new ResourceFormatter(Locale.CHINA)
+	);
 	
 	/**
 	 * @param locale
 	 */
 	public ProductManager(Locale locale) {
-		super();
-		this.locale = locale;
-		
-		resources = ResourceBundle.getBundle("ora.demo.data.resources");
-		dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).localizedBy(locale);
-		moneyFormat = NumberFormat.getCurrencyInstance(locale);
+		this(locale.toLanguageTag());
+	}
+	
+	public ProductManager(String languageTag) {
+		changeLocale(languageTag);
+	}
+	
+	public void changeLocale(String languageTag) {
+		formatter = formatters.getOrDefault(languageTag, formatters.get("es-ES"));
 	}
 
+	public static Set<String> getSupportedLocales() {
+		return formatters.keySet();
+	}
+	
 	public Product createProduct(int id, String name, BigDecimal price, Rating rating, LocalDate bestBefore) {
 		Product product = new Food(id, name, price, rating, bestBefore);
 		products.putIfAbsent(product, new ArrayList<Review>());
@@ -110,26 +119,65 @@ public class ProductManager {
 		Collections.sort(reviews);
 		StringBuilder txt = new StringBuilder();
 		
-		txt.append(MessageFormat.format(resources.getString("product"),
-				product.getName(),
-				moneyFormat.format(product.getPrice()),
-				product.getRating().getStars(),
-				dateFormat.format(product.getBestBefore())));
+		txt.append(formatter.formatProduct(product));
 		txt.append("\n");
 		
 		for (Review review : reviews) {
-			txt.append(MessageFormat.format(resources.getString("review"),
-					review.getRating().getStars(),
-					review.getComments()));
+			txt.append(formatter.formatReview(review));
 			
 			txt.append("\n");
 		}
 		
 		if (reviews.isEmpty()) {
-			txt.append(resources.getString("no.reviews"));
+			txt.append(formatter.getText("no.reviews"));
 			txt.append("\n");
 		}
 		
 		System.out.println(txt);
+	}
+	
+	public void printProducts(Comparator<Product> sorter) {
+		List<Product> productList = new ArrayList<Product>(products.keySet());
+		productList.sort(sorter);
+		StringBuilder txt = new StringBuilder();
+		
+		for (Product product : productList) {
+			txt.append(formatter.formatProduct(product));
+			txt.append('\n');
+		}
+		
+		System.out.println(txt);
+	}
+	
+	private static class ResourceFormatter {
+//		private Locale locale;
+		private ResourceBundle resources;
+		private DateTimeFormatter dateFormat;
+		private NumberFormat moneyFormat;
+		
+		private ResourceFormatter(Locale locale) {
+//			this.locale = locale;
+			resources = ResourceBundle.getBundle("ora.demo.data.resources", locale);
+			dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).localizedBy(locale);
+			moneyFormat = NumberFormat.getCurrencyInstance(locale);
+		}
+		
+		private String formatProduct(Product product) {
+			return MessageFormat.format(resources.getString("product"),
+					product.getName(),
+					moneyFormat.format(product.getPrice()),
+					product.getRating().getStars(),
+					dateFormat.format(product.getBestBefore()));
+		}
+		
+		private String formatReview(Review review) {
+			return MessageFormat.format(resources.getString("review"),
+					review.getRating().getStars(),
+					review.getComments());
+		}
+		
+		private String getText(String key) {
+			return resources.getString(key);
+		}
 	}
 }

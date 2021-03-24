@@ -32,6 +32,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProductManager {
 	private Map<Product, List<Review>> products = new HashMap<>();
@@ -119,15 +120,12 @@ public class ProductManager {
 		txt.append(formatter.formatProduct(product));
 		txt.append("\n");
 		
-		for (Review review : reviews) {
-			txt.append(formatter.formatReview(review));
-			
-			txt.append("\n");
-		}
-		
 		if (reviews.isEmpty()) {
-			txt.append(formatter.getText("no.reviews"));
-			txt.append("\n");
+			txt.append(formatter.getText("no.reviews" + '\n'));
+		} else {
+			txt.append(reviews.stream()
+					.map(r -> formatter.formatReview(r) + '\n')
+					.collect(Collectors.joining()));
 		}
 		
 		System.out.println(txt);

@@ -76,16 +76,11 @@ public class ProductManager {
 	}
 	
 	public Product findProduct(int productId) {
-		Product result = null;
-		
-		for(Product product : products.keySet()) {
-			if (product.getId() == productId) {
-				result = product;
-				break;
-			}
-		}
-		
-		return result;
+		return products.keySet()
+				.stream()
+				.filter(p -> p.getId() == productId)
+				.findFirst()
+				.orElseGet(() -> null);
 	}
 	
 	public Product reviewProduct(int productId, Rating rating, String comments) {
@@ -94,17 +89,19 @@ public class ProductManager {
 	
 	public Product reviewProduct(Product product, Rating rating, String comments) {
 		List<Review> reviews = products.get(product);
-		int sum = 0;
 		
 		// It's not possible to update the product in a HashMap.
 		products.remove(product, reviews);
 		reviews.add(new Review(rating, comments));
 		
-		for (Review review : reviews) {
-			sum += review.getRating().ordinal();
-		}
+		product = product.applyRating(
+				Rateable.convert(
+						(int)Math.round(
+								reviews.stream()
+								.mapToInt(r -> r.getRating().ordinal())
+								.average()
+								.orElse(0))));
 		
-		product = product.applyRating(Rateable.convert(Math.round((float)sum / reviews.size())));
 		// Add the updated product.
 		products.put(product, reviews);
 		return product;

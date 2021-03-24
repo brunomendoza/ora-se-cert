@@ -32,6 +32,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ProductManager {
@@ -126,20 +127,23 @@ public class ProductManager {
 			txt.append(reviews.stream()
 					.map(r -> formatter.formatReview(r) + '\n')
 					.collect(Collectors.joining()));
+			
+			// It could be 'reviews.stream().forEach(r -> txt.append(formatter.formatReview(r) + '\n'));'
+			// but this statement has some parallel processing implications because of the order in which
+			// StringBuilder and forEach method work.
 		}
 		
 		System.out.println(txt);
 	}
 	
-	public void printProducts(Comparator<Product> sorter) {
-		List<Product> productList = new ArrayList<Product>(products.keySet());
-		productList.sort(sorter);
+	public void printProducts(Predicate<Product> filter, Comparator<Product> sorter) {
 		StringBuilder txt = new StringBuilder();
 		
-		for (Product product : productList) {
-			txt.append(formatter.formatProduct(product));
-			txt.append('\n');
-		}
+		products.keySet()
+			.stream()
+			.sorted(sorter)
+			.filter(filter)
+			.forEach(p -> txt.append(formatter.formatProduct(p) + '\n'));
 		
 		System.out.println(txt);
 	}

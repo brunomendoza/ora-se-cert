@@ -77,6 +77,21 @@ public class ProductManager {
 		return product;
 	}
 	
+	/**
+	 * 
+	 * @return A map storing rating number of stars and discount per rating.
+	 */
+	public Map<String, String> getDiscounts() {
+		return products.keySet()
+			.stream()
+			.collect(
+					Collectors.groupingBy(
+						p -> p.getRating().getStars(),
+						Collectors.collectingAndThen(
+								Collectors.summingDouble(p -> p.getDiscount().doubleValue()),
+								d -> formatter.moneyFormat.format(d))));
+	}
+	
 	public Product findProduct(int productId) {
 		return products.keySet()
 				.stream()

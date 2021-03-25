@@ -49,7 +49,7 @@ public class Shop {
 		
 		pm.changeLocale("en-US");
 		
-		pm.createProduct(102, "Coffe", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
+		pm.createProduct(102, "Coffee", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
 		pm.reviewProduct(102, Rating.THREE_STAR, "Coffee was ok");
 		pm.reviewProduct(102, Rating.ONE_STAR, "Where is the milk?!");
 		pm.reviewProduct(102, Rating.FIVE_STAR, "It's perfect with ten spoons of sugar");
@@ -86,6 +86,7 @@ public class Shop {
 		
 //		Compare by stars
 		pm.printProducts(p -> p.getPrice().floatValue() < 2, (p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal());
+		pm.getDiscounts().forEach((rating, discount) -> System.out.println(rating + "\t" + discount));
 		
 //		Compare by price
 //		pm.printProducts((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()));

@@ -23,6 +23,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,8 +95,32 @@ public class ProductManager {
 					Integer.parseInt((String)values[0]),
 					Rateable.convert(Integer.parseInt((String) values[1])),
 					(String)values[2]);
-		} catch (ParseException e) {
-			logger.log(Level.WARNING, "Error parsing review " + text, e);
+		} catch (ParseException | NumberFormatException e) {
+			logger.log(Level.WARNING, "Error parsing review " + text);
+		}
+	}
+	
+	public void parseProduct(String text) {
+		try {
+			Object[] values = productFormat.parse(text);
+			int id = Integer.parseInt((String)values[1]);
+			String name = (String)values[2];
+			BigDecimal price = BigDecimal.valueOf(Double.parseDouble((String)values[3]));
+			Rating rating = Rateable.convert(Integer.parseInt((String)values[4]));
+			
+			switch ((String)values[0]) {
+			case "D":
+				createProduct(id, name, price, rating);
+				break;
+				
+			case "F":
+				LocalDate bestBefore = LocalDate.parse((String) values[5]);
+				createProduct(id, name, price, rating, bestBefore);
+				break;
+			}
+			
+		} catch (ParseException | NumberFormatException | DateTimeParseException e) {
+			logger.log(Level.WARNING, "Error parsing product " + text + " " + e.getMessage()); 
 		}
 	}
 	
@@ -107,11 +132,11 @@ public class ProductManager {
 		return products.keySet()
 			.stream()
 			.collect(
-					Collectors.groupingBy(
-						p -> p.getRating().getStars(),
-						Collectors.collectingAndThen(
-								Collectors.summingDouble(p -> p.getDiscount().doubleValue()),
-								d -> formatter.moneyFormat.format(d))));
+				Collectors.groupingBy(
+					p -> p.getRating().getStars(),
+					Collectors.collectingAndThen(
+						Collectors.summingDouble(p -> p.getDiscount().doubleValue()),
+						d -> formatter.moneyFormat.format(d))));
 	}
 	
 	public Product findProduct(int productId) throws ProductManagerException {
@@ -141,12 +166,12 @@ public class ProductManager {
 		
 		product = product.applyRating(
 				Rateable.convert(
-						(int)Math.round(
-								reviews.stream()
-								.mapToInt(r -> r.getRating().ordinal())
-								.average()
-								.orElse(0))));
-		
+					(int)Math.round(
+						reviews.stream()
+						.mapToInt(r -> r.getRating().ordinal())
+						.average()
+						.orElse(0))));
+	
 		// Add the updated product.
 		products.put(product, reviews);
 		return product;
@@ -169,7 +194,7 @@ public class ProductManager {
 		txt.append("\n");
 		
 		if (reviews.isEmpty()) {
-			txt.append(formatter.getText("no.reviews" + '\n'));
+			txt.append(formatter.getText("no.reviews") + '\n');
 		} else {
 			txt.append(reviews.stream()
 					.map(r -> formatter.formatReview(r) + '\n')

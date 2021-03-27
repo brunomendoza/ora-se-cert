@@ -97,7 +97,7 @@ public class ProductManager {
 				.stream()
 				.filter(p -> p.getId() == productId)
 				.findFirst()
-				.orElseGet(() -> null);
+				.get(); // If element doesn't exist it will return a NoSuchElementException object.
 	}
 	
 	public Product reviewProduct(int productId, Rating rating, String comments) {

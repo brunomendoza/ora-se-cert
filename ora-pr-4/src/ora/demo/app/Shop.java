@@ -37,6 +37,7 @@ public class Shop {
 		
 		pm.createProduct(101, "Tea", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
 //		pm.printProductReport(101);
+		pm.printProductReport(36);
 		
 		pm.reviewProduct(101, Rating.FOUR_STAR, "Nice hot cup of tea");
 		pm.reviewProduct(101, Rating.TWO_STAR, "Rather weak tea");

@@ -33,6 +33,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ProductManager {
@@ -45,6 +47,8 @@ public class ProductManager {
 		"fr-FR", new ResourceFormatter(Locale.FRANCE),
 		"zh-CH", new ResourceFormatter(Locale.CHINA)
 	);
+	
+	private static final Logger logger = Logger.getLogger(ProductManager.class.getName());
 	
 	/**
 	 * @param locale
@@ -92,16 +96,22 @@ public class ProductManager {
 								d -> formatter.moneyFormat.format(d))));
 	}
 	
-	public Product findProduct(int productId) {
+	public Product findProduct(int productId) throws ProductManagerException {
 		return products.keySet()
 				.stream()
 				.filter(p -> p.getId() == productId)
 				.findFirst()
-				.get(); // If element doesn't exist it will return a NoSuchElementException object.
+				.orElseThrow(() -> new ProductManagerException("Product with id " + productId + " not found"));
 	}
 	
 	public Product reviewProduct(int productId, Rating rating, String comments) {
-		return reviewProduct(findProduct(productId), rating, comments);
+		try {
+			return reviewProduct(findProduct(productId), rating, comments);
+		} catch (ProductManagerException e) {
+			logger.log(Level.INFO, e.getMessage());
+		}
+		
+		return null;
 	}
 	
 	public Product reviewProduct(Product product, Rating rating, String comments) {
@@ -125,7 +135,11 @@ public class ProductManager {
 	}
 	
 	public void printProductReport(int productId) {
-		printProductReport(findProduct(productId));
+		try {
+			printProductReport(findProduct(productId));
+		} catch (ProductManagerException e) {
+			logger.log(Level.INFO, e.getMessage());
+		}
 	}
 	
 	public void printProductReport(Product product) {

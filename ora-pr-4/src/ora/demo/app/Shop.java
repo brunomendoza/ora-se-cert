@@ -37,30 +37,30 @@ public class Shop {
 		
 		pm.createProduct(101, "Tea", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
 //		pm.printProductReport(101);
-		pm.printProductReport(36);
 		
-		pm.reviewProduct(101, Rating.FOUR_STAR, "Nice hot cup of tea");
+		pm.parseReview("101,4,Nice hot cup of tea");
+//		pm.reviewProduct(101, Rating.FOUR_STAR, "Nice hot cup of tea");
 		pm.reviewProduct(101, Rating.TWO_STAR, "Rather weak tea");
 		pm.reviewProduct(101, Rating.FOUR_STAR, "Fine tea");
 		pm.reviewProduct(101, Rating.FOUR_STAR, "Good tea");
 		pm.reviewProduct(101, Rating.FIVE_STAR, "Perfect tea");
 		pm.reviewProduct(101, Rating.THREE_STAR, "Just add some lemon");
 		
-//		pm.printProductReport(101);
+		pm.printProductReport(101);
 		
-		pm.changeLocale("en-US");
-		
-		pm.createProduct(102, "Coffee", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
-		pm.reviewProduct(102, Rating.THREE_STAR, "Coffee was ok");
-		pm.reviewProduct(102, Rating.ONE_STAR, "Where is the milk?!");
-		pm.reviewProduct(102, Rating.FIVE_STAR, "It's perfect with ten spoons of sugar");
+//		pm.changeLocale("en-US");
+//		
+//		pm.createProduct(102, "Coffee", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
+//		pm.reviewProduct(102, Rating.THREE_STAR, "Coffee was ok");
+//		pm.reviewProduct(102, Rating.ONE_STAR, "Where is the milk?!");
+//		pm.reviewProduct(102, Rating.FIVE_STAR, "It's perfect with ten spoons of sugar");
 		
 //		pm.printProductReport(102);
 		
-		pm.createProduct(103, "Cake", BigDecimal.valueOf(3.99), Rating.NOT_RATED);
-		pm.reviewProduct(103, Rating.THREE_STAR, "Very nice cake");
-		pm.reviewProduct(103, Rating.FOUR_STAR, "It's good, but I've expected more chocolate");
-		pm.reviewProduct(103, Rating.FIVE_STAR, "This cake is perfect");
+//		pm.createProduct(103, "Cake", BigDecimal.valueOf(3.99), Rating.NOT_RATED);
+//		pm.reviewProduct(103, Rating.THREE_STAR, "Very nice cake");
+//		pm.reviewProduct(103, Rating.FOUR_STAR, "It's good, but I've expected more chocolate");
+//		pm.reviewProduct(103, Rating.FIVE_STAR, "This cake is perfect");
 		
 //		pm.printProductReport(103);
 		
@@ -86,8 +86,8 @@ public class Shop {
 //		pm.printProducts(comparator);
 		
 //		Compare by stars
-		pm.printProducts(p -> p.getPrice().floatValue() < 2, (p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal());
-		pm.getDiscounts().forEach((rating, discount) -> System.out.println(rating + "\t" + discount));
+//		pm.printProducts(p -> p.getPrice().floatValue() < 2, (p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal());
+//		pm.getDiscounts().forEach((rating, discount) -> System.out.println(rating + "\t" + discount));
 		
 //		Compare by price
 //		pm.printProducts((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()));

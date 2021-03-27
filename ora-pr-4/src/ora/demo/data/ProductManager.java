@@ -20,6 +20,7 @@ package ora.demo.data;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -40,6 +41,11 @@ import java.util.stream.Collectors;
 public class ProductManager {
 	private Map<Product, List<Review>> products = new HashMap<>();
 	private ResourceFormatter formatter;
+	
+	private ResourceBundle config = ResourceBundle.getBundle("ora.demo.data.config");
+	private MessageFormat reviewFormat = new MessageFormat(config.getString("review.data.format"));
+	private MessageFormat productFormat = new MessageFormat(config.getString("product.data.format"));
+	
 	private static Map<String, ResourceFormatter> formatters = Map.of(
 		"es-ES", new ResourceFormatter(new Locale("es", "ES")),
 		"en-US", new ResourceFormatter(Locale.US),
@@ -79,6 +85,18 @@ public class ProductManager {
 		Product product = new Drink(id, name, price, rating);
 		products.putIfAbsent(product, new ArrayList<Review>());
 		return product;
+	}
+	
+	public void parseReview(String text) {
+		try {
+			Object[] values =  reviewFormat.parse(text);
+			reviewProduct(
+					Integer.parseInt((String)values[0]),
+					Rateable.convert(Integer.parseInt((String) values[1])),
+					(String)values[2]);
+		} catch (ParseException e) {
+			logger.log(Level.WARNING, "Error parsing review " + text, e);
+		}
 	}
 	
 	/**
@@ -178,13 +196,11 @@ public class ProductManager {
 	}
 	
 	private static class ResourceFormatter {
-//		private Locale locale;
 		private ResourceBundle resources;
 		private DateTimeFormatter dateFormat;
 		private NumberFormat moneyFormat;
 		
 		private ResourceFormatter(Locale locale) {
-//			this.locale = locale;
 			resources = ResourceBundle.getBundle("ora.demo.data.resources", locale);
 			dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).localizedBy(locale);
 			moneyFormat = NumberFormat.getCurrencyInstance(locale);

@@ -17,13 +17,9 @@
 
 package ora.demo.app;
 
-import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.Locale;
 
-import ora.demo.data.Product;
 import ora.demo.data.ProductManager;
-import ora.demo.data.Rating;
 
 /**
  * {@code Shop} class represents an application that manages Products.

@@ -77,6 +77,7 @@ public class ProductManager {
 	
 	public ProductManager(String languageTag) {
 		changeLocale(languageTag);
+		loadAllData();
 	}
 	
 	public void changeLocale(String languageTag) {
@@ -99,7 +100,7 @@ public class ProductManager {
 		return product;
 	}
 	
-	public Review parseReview(String text) {
+	private Review parseReview(String text) {
 		Review review = null;
 		
 		try {
@@ -115,7 +116,7 @@ public class ProductManager {
 		return review;
 	}
 	
-	public Product parseProduct(String text) {
+	private Product parseProduct(String text) {
 		Product product = null;
 		
 		try {
@@ -168,11 +169,23 @@ public class ProductManager {
 		
 		try {
 			product = parseProduct(Files.lines(dataFolder.resolve(file), Charset.forName("UTF-8")).findFirst().orElseThrow());
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error loading message " + e.getMessage());
 		}
 		
 		return product;
+	}
+	
+	private void loadAllData () {
+		try {
+			products = Files.list(dataFolder)
+					.filter(file -> file.getFileName().toString().startsWith("product"))
+					.map(file -> loadProduct(file))
+					.filter(product -> product != null)
+					.collect(Collectors.toMap(product -> product, product -> loadReviews(product)));
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Error loading data " + e.getMessage());
+		}
 	}
 	
 	/**

@@ -17,9 +17,11 @@
 
 package ora.demo.app;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import ora.demo.data.ProductManager;
+import ora.demo.data.Rating;
 
 /**
  * {@code Shop} class represents an application that manages Products.
@@ -29,81 +31,19 @@ import ora.demo.data.ProductManager;
 public class Shop {
 	
 	public static void main(String[] args) {
-		ProductManager pm = new ProductManager(new Locale("es", "ES"));
-		
-//		pm.createProduct(101, "Tea", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
-//		pm.printProductReport(101);
-		
-		pm.parseProduct("D,101,Tea,1.99,0,2019-09-19");
-		
-//		pm.reviewProduct(101, Rating.FOUR_STAR, "Nice hot cup of tea");
-//		pm.reviewProduct(101, Rating.TWO_STAR, "Rather weak tea");
-//		pm.reviewProduct(101, Rating.FOUR_STAR, "Fine tea");
-//		pm.reviewProduct(101, Rating.FOUR_STAR, "Good tea");
-//		pm.reviewProduct(101, Rating.FIVE_STAR, "Perfect tea");
-//		pm.reviewProduct(101, Rating.THREE_STAR, "Just add some lemon");
-		
-		pm.parseReview("101,4,Nice hot cup of tea");
-		pm.parseReview("101,2,Rather weak tea");
-		pm.parseReview("101,4,Fine tea");
-		pm.parseReview("101,4,Good tea");
-		pm.parseReview("101,5,Perfect tea");
-		pm.parseReview("101,3,Just add some lemon");
+		ProductManager pm = new ProductManager("en-US");
 		
 		pm.printProductReport(101);
 		
-		pm.parseProduct("F,103,Cake,3.99,0,2019-09-19");
-		pm.printProductReport(103);
+		pm.createProduct(164, "Kombucha", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
+		pm.reviewProduct(164, Rating.TWO_STAR, "Looks like tea but is it?");
+		pm.reviewProduct(164, Rating.FOUR_STAR, "Fine tea");
+		pm.reviewProduct(164, Rating.FOUR_STAR, "This is not tea");
+		pm.reviewProduct(164, Rating.FIVE_STAR, "Perfect!");
 		
-//		pm.changeLocale("en-US");
-//		
-//		pm.createProduct(102, "Coffee", BigDecimal.valueOf(1.99), Rating.NOT_RATED);
-//		pm.reviewProduct(102, Rating.THREE_STAR, "Coffee was ok");
-//		pm.reviewProduct(102, Rating.ONE_STAR, "Where is the milk?!");
-//		pm.reviewProduct(102, Rating.FIVE_STAR, "It's perfect with ten spoons of sugar");
+		pm.printProductReport(164);
 		
-//		pm.printProductReport(102);
-		
-//		pm.createProduct(103, "Cake", BigDecimal.valueOf(3.99), Rating.NOT_RATED);
-//		pm.reviewProduct(103, Rating.THREE_STAR, "Very nice cake");
-//		pm.reviewProduct(103, Rating.FOUR_STAR, "It's good, but I've expected more chocolate");
-//		pm.reviewProduct(103, Rating.FIVE_STAR, "This cake is perfect");
-		
-//		pm.printProductReport(103);
-		
-//		Anonymous class
-//		pm.printProducts(new Comparator<Product>() {
-//			@Override
-//			public int compare(Product p1, Product p2) {
-//				return p2.getRating().ordinal() - p1.getRating().ordinal();
-//			}
-//		});
-		
-//		Anonymous Inner Class
-//		Anonymous class can access to final or practically final outer
-//		member variables.
-//		Comparator<Product> comparator = new Comparator<Product>() {
-//			@Override
-//			public int compare(Product o1, Product o2) {
-//				// TODO Auto-generated method stub
-//				return 0;
-//			}
-//		};
-		
-//		pm.printProducts(comparator);
-		
-//		Compare by stars
-//		pm.printProducts(p -> p.getPrice().floatValue() < 2, (p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal());
-//		pm.getDiscounts().forEach((rating, discount) -> System.out.println(rating + "\t" + discount));
-		
-//		Compare by price
-//		pm.printProducts((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()));
-		
-//		Compare by starts (rating)
-//		Comparator<Product> ratingSorter = (p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal();
-//		Comparator<Product> priceSorter = (p1, p2) -> p2.getPrice().compareTo(p1.getPrice());
-		
-//		pm.printProducts(ratingSorter.thenComparing(priceSorter));
-//		pm.printProducts(priceSorter.thenComparing(ratingSorter).reversed());
+		pm.printProducts(p -> p.getPrice().floatValue() < 2, (p1, p2) -> p2.getRating().ordinal() - p1.getRating().ordinal());
+		pm.getDiscounts().forEach((rating, discount) -> System.out.println(rating + "\t" + discount));
 	}
 }

@@ -19,6 +19,7 @@ package ora.demo.data;
 
 import static ora.demo.data.Rating.NOT_RATED;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ import java.util.Objects;
  * @author Bruno Mendoza
  * @version 1.0
  */
-public abstract class Product implements Rateable<Product> {
+public abstract class Product implements Rateable<Product>, Serializable {
 	private int id;           // You can use 'final' for ummutable objects.
 	private String name;      // You can use 'final' for ummutable objects.
 	private BigDecimal price; // You can use 'final' for ummutable objects.

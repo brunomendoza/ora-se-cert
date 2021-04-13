@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 
 public class ProductManager {
 	private Map<Product, List<Review>> products = new HashMap<>();
-	private ResourceFormatter formatter;
+//	private ResourceFormatter formatter;
 	
 	private ResourceBundle config = ResourceBundle.getBundle("ora.demo.data.config");
 	private MessageFormat reviewFormat = new MessageFormat(config.getString("review.data.format"));
@@ -71,21 +71,14 @@ public class ProductManager {
 	);
 	
 	private static final Logger logger = Logger.getLogger(ProductManager.class.getName());
+	private static final ProductManager pm = new ProductManager();
 	
-	/**
-	 * @param locale
-	 */
-	public ProductManager(Locale locale) {
-		this(locale.toLanguageTag());
+	public static ProductManager getInstance() {
+		return pm;
 	}
 	
-	public ProductManager(String languageTag) {
-		changeLocale(languageTag);
+	private ProductManager() {
 		loadAllData();
-	}
-	
-	public void changeLocale(String languageTag) {
-		formatter = formatters.getOrDefault(languageTag, formatters.get("es-ES"));
 	}
 
 	public static Set<String> getSupportedLocales() {
@@ -233,7 +226,9 @@ public class ProductManager {
 	 * 
 	 * @return A map storing rating number of stars and discount per rating.
 	 */
-	public Map<String, String> getDiscounts() {
+	public Map<String, String> getDiscounts(String languageTag) {
+		ResourceFormatter formatter = formatters.getOrDefault(languageTag, formatters.get("en-GB"));
+		
 		return products.keySet()
 			.stream()
 			.collect(
@@ -282,9 +277,9 @@ public class ProductManager {
 		return product;
 	}
 	
-	public void printProductReport(int productId) {
+	public void printProductReport(int productId, String languageTag) {
 		try {
-			printProductReport(findProduct(productId));
+			printProductReport(findProduct(productId), languageTag);
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error printing product report " + e.getMessage(), e);
 		} catch (ProductManagerException e) {
@@ -292,7 +287,9 @@ public class ProductManager {
 		}
 	}
 	
-	public void printProductReport(Product product) throws IOException {
+	public void printProductReport(Product product, String languageTag) throws IOException {
+		ResourceFormatter formatter = formatters.getOrDefault(languageTag, formatters.get("en-GB"));
+		
 		List<Review> reviews = products.get(product);
 		Collections.sort(reviews);
 		
@@ -317,7 +314,8 @@ public class ProductManager {
 		}
 	}
 	
-	public void printProducts(Predicate<Product> filter, Comparator<Product> sorter) {
+	public void printProducts(Predicate<Product> filter, Comparator<Product> sorter, String languageTag) {
+		ResourceFormatter formatter = formatters.getOrDefault(languageTag, formatters.get("en-GB"));
 		StringBuilder txt = new StringBuilder();
 		
 		products.keySet()

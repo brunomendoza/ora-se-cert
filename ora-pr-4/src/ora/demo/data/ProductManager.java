@@ -372,7 +372,7 @@ public class ProductManager {
 			
 			System.out.println(txt);
 		} finally {
-			readLock.unlock();;
+			readLock.unlock();
 		}
 	}
 	
